@@ -3,7 +3,6 @@ from app.models.document import (
     DocumentPermission,
     DocumentVersion,
 )
-
 from app.models.knowledge import (
     Chunk,
     Entity,
@@ -11,7 +10,6 @@ from app.models.knowledge import (
     Fact,
     Relationship,
 )
-
 from app.models.processing import (
     DocumentClassification,
     ExtractionResult,
@@ -19,11 +17,26 @@ from app.models.processing import (
     PageAsset,
     ProcessingJob,
 )
-
 from app.models.user import (
     Role,
     User,
     UserRole,
+)
+from app.models.conversation import (
+    Conversation,
+    Message,
+    Answer,
+    CitationModel,
+)
+from app.models.retrieval_log import (
+    RetrievalLog,
+    RetrievedItem,
+)
+from app.models.evaluation import (
+    EvaluationDataset,
+    EvaluationQuestion,
+    EvaluationRun,
+    EvaluationResult,
 )
 
 __all__ = [
@@ -43,4 +56,14 @@ __all__ = [
     "EntityMention",
     "Fact",
     "Relationship",
+    "Conversation",
+    "Message",
+    "Answer",
+    "CitationModel",
+    "RetrievalLog",
+    "RetrievedItem",
+    "EvaluationDataset",
+    "EvaluationQuestion",
+    "EvaluationRun",
+    "EvaluationResult",
 ]

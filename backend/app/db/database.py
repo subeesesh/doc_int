@@ -1,23 +1,17 @@
+"""Database session management."""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.config.settings import settings
 
+engine = create_engine(settings.DATABASE_URL, echo=False, pool_pre_ping=True)
+SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
-DATABASE_URL = (
-    f"postgresql+psycopg://"
-    f"{settings.postgres_user}:{settings.postgres_password}"
-    f"@{settings.postgres_host}:{settings.postgres_port}"
-    f"/{settings.postgres_db}"
-)
 
-engine = create_engine(
-    DATABASE_URL,
-    pool_pre_ping=True,
-)
-
-SessionLocal = sessionmaker(
-    bind=engine,
-    autoflush=False,
-    autocommit=False,
-)
+def get_db():
+    """Dependency for FastAPI endpoints."""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

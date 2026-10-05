@@ -63,12 +63,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = (
-    f"postgresql+psycopg://"
-    f"{settings.postgres_user}:{settings.postgres_password}"
-    f"@{settings.postgres_host}:{settings.postgres_port}"
-    f"/{settings.postgres_db}"
-)
+    url = settings.DATABASE_URL
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -83,12 +78,7 @@ def run_migrations_offline() -> None:
 def run_migrations_online() -> None:
     """Run migrations in online mode."""
 
-    database_url = (
-        f"postgresql+psycopg://"
-        f"{settings.postgres_user}:{settings.postgres_password}"
-        f"@{settings.postgres_host}:{settings.postgres_port}"
-        f"/{settings.postgres_db}"
-    )
+    database_url = settings.DATABASE_URL
 
     connectable = create_engine(
         database_url,
