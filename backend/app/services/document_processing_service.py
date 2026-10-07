@@ -91,11 +91,16 @@ class DocumentProcessingService:
             
             # Step 2: Docling processing
             logger.info(f'Processing document: {filename}')
-            markdown = self.processor.process(file_bytes, filename)
+            doc_res = self.processor.process(file_bytes, filename)
+            if isinstance(doc_res, dict):
+                markdown = doc_res.get("markdown", "")
+            else:
+                markdown = str(doc_res)
+                doc_res = {"markdown": markdown}
             result['markdown_length'] = len(markdown)
             
-            # Step 3: Extract and save pages
-            pages = self.page_extractor.extract_pages(markdown)
+            # Step 3: Extract and save pages using Docling provenance
+            pages = self.page_extractor.extract_pages(doc_res)
             saved_pages = self.page_service.save_pages(document_version.id, pages)
             result['pages'] = len(saved_pages)
             

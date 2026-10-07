@@ -28,8 +28,10 @@ class DocumentProcessor:
             "markdown": document.export_to_markdown(),
         }
 
-    def process(self, file_bytes: bytes, filename: str) -> str:
-        """Process document from raw bytes safely on Windows using tempfile.mkstemp."""
+    def process(self, file_bytes: bytes, filename: str) -> dict[str, Any]:
+        """Process document from raw bytes safely on Windows using tempfile.mkstemp.
+        Returns a dict containing both the DoclingDocument and exported markdown.
+        """
         suffix = os.path.splitext(filename)[1]
         fd, tmp_path = tempfile.mkstemp(suffix=suffix)
         try:
@@ -37,7 +39,12 @@ class DocumentProcessor:
             with open(tmp_path, "wb") as f:
                 f.write(file_bytes)
             result = self.converter.convert(tmp_path)
-            return result.document.export_to_markdown()
+            document = result.document
+            return {
+                "document": document,
+                "markdown": document.export_to_markdown(),
+                "source_path": tmp_path,
+            }
         finally:
             if os.path.exists(tmp_path):
                 try:

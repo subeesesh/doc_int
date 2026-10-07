@@ -53,7 +53,9 @@ class PageExtractor:
 
                 text = self._extract_text(item)
                 if text:
-                    page_map.setdefault(page_no, []).append(text)
+                    page_texts = page_map.setdefault(page_no, [])
+                    if not page_texts or page_texts[-1] != text:
+                        page_texts.append(text)
 
         pages = []
         for page_number in sorted(page_map):
